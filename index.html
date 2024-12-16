@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doçuras da Aucy - Cardápio de Natal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Menu de Natal</h1>
+            <p class="subtitle">Doçuras da Aucy</p>
+            <p class="tagline">O seu natal merece!</p>
+        </div>
+    </header>
+
+    <section class="combos">
+        <h2>Combos Especiais</h2>
+        <div class="combo-container">
+            <!-- Combos serão carregados dinamicamente -->
+        </div>
+    </section>
+
+    <section class="bolos-natalinos">
+        <h2>Bolos Natalinos</h2>
+        <div class="product-grid">
+            <!-- Bolos serão carregados dinamicamente -->
+        </div>
+    </section>
+
+    <section class="salgados">
+        <h2>Salgados Especiais</h2>
+        <div class="product-grid">
+            <!-- Salgados serão carregados dinamicamente -->
+        </div>
+    </section>
+
+    <section class="sobremesas">
+        <h2>Sobremesas Especiais</h2>
+        <div class="product-grid">
+            <!-- Sobremesas serão carregadas dinamicamente -->
+        </div>
+    </section>
+
+    <section class="info">
+        <h2>Informações Importantes</h2>
+        <div class="info-container">
+            <div class="info-card">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>Pedidos até</h3>
+                <p>21/12 às 19h (Sábado)</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-money-bill-wave"></i>
+                <h3>Pagamento</h3>
+                <p>50% para reserva do pedido</p>
+                <p>Aceitamos PIX, dinheiro e cartão</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-clock"></i>
+                <h3>Retiradas</h3>
+                <p>22/12 (Domingo) - 10:00h às 17:00h</p>
+                <p>23/12 (Segunda) - 11:00h às 19:00h</p>
+                <p>24/12 (Terça) - 11:00h às 18:00h</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="contact-info">
+            <h3>Entre em Contato</h3>
+            <p><i class="fab fa-whatsapp"></i> (87) 98133-4968</p>
+            <p><i class="fas fa-map-marker-alt"></i> Rua Santos dumont 495, vila mocó - Petrolina-PE</p>
+        </div>
+        <div class="whatsapp-float">
+            <a href="https://wa.me/5587981334968" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // Função para formatar preço em Reais
+        function formatPrice(price) {
+            return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // Função para renderizar um produto com tamanhos
+        function renderProductWithSizes(product) {
+            let sizesHtml = '';
+            if (product.sizes && product.sizes.length > 0) {
+                sizesHtml = `
+                    <div class="size-selector">
+                        <label for="tamanho-${product.id}">Selecione o tamanho:</label>
+                        <select id="tamanho-${product.id}" class="size-select">
+                            ${product.sizes.map(size => `
+                                <option value="${size.name} - ${formatPrice(size.price)}">${size.name} - Serve ${size.serves}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+                `;
+            } else {
+                sizesHtml = `
+                    <div class="size-info single-size">
+                        <span class="price">${formatPrice(product.price)}</span>
+                        <span class="serves">Serve ${product.serves}</span>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="product-card">
+                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    ${sizesHtml}
+                    <button onclick="fazerPedido('${product.name}', 'tamanho-${product.id}')" class="cta-button">Fazer Pedido</button>
+                </div>
+            `;
+        }
+
+        // Carregar produtos ao iniciar a página
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/get-products');
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar produtos');
+                }
+                
+                const products = await response.json();
+                
+                // Renderizar combos
+                const combos = products.filter(p => p.category === 'combos');
+                const comboContainer = document.querySelector('.combo-container');
+                comboContainer.innerHTML = combos.map(combo => `
+                    <div class="combo-card">
+                        <img src="${combo.imageUrl}" alt="${combo.name}" class="product-image">
+                        <h3>${combo.name}</h3>
+                        <p>${combo.description}</p>
+                        <span class="price">R$ ${parseFloat(combo.price).toFixed(2).replace('.', ',')}</span>
+                        <p class="serves">Serve ${combo.serves}</p>
+                        <a href="https://wa.me/${WHATSAPP_NUMBER}?text=Olá! Gostaria de informações sobre o combo: ${encodeURIComponent(combo.name)}" class="cta-button" target="_blank">
+                            Fazer Pedido
+                        </a>
+                    </div>
+                `).join('');
+
+                // Renderizar bolos
+                const bolos = products.filter(p => p.category === 'bolos');
+                const bolosGrid = document.querySelector('.bolos-natalinos .product-grid');
+                bolosGrid.innerHTML = bolos.map(bolo => renderProductWithSizes(bolo)).join('');
+
+                // Renderizar salgados
+                const salgados = products.filter(p => p.category === 'salgados');
+                const salgadosGrid = document.querySelector('.salgados .product-grid');
+                salgadosGrid.innerHTML = salgados.map(salgado => renderProductWithSizes(salgado)).join('');
+
+                // Renderizar sobremesas
+                const sobremesas = products.filter(p => p.category === 'sobremesas');
+                const sobremesasGrid = document.querySelector('.sobremesas .product-grid');
+                sobremesasGrid.innerHTML = sobremesas.map(sobremesa => renderProductWithSizes(sobremesa)).join('');
+
+            } catch (error) {
+                console.error('Erro ao carregar produtos:', error);
+                alert('Erro ao carregar produtos. Por favor, recarregue a página.');
+            }
+        });
+
+        function fazerPedido(nome, tamanhoId) {
+            let mensagem = `Olá! Gostaria de fazer um pedido:\n\n${nome}`;
+            
+            if (tamanhoId) {
+                const tamanhoSelect = document.getElementById(tamanhoId);
+                if (tamanhoSelect) {
+                    mensagem += `\nTamanho: ${tamanhoSelect.value}`;
+                }
+            }
+            
+            // Número do WhatsApp
+            const telefone = '5587981334968';
+            
+            // Criar URL do WhatsApp
+            const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+            
+            // Abrir WhatsApp em nova aba
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html> 

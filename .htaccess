@@ -1,0 +1,55 @@
+RewriteEngine On
+
+# Redirecionar HTTP para HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Redirecionar rotas da API para api.php
+RewriteRule ^get-products$ api.php [L,QSA]
+RewriteRule ^get-product/([^/]+)$ api.php [L,QSA]
+RewriteRule ^save-product$ api.php [L,QSA]
+RewriteRule ^delete-product/([^/]+)$ api.php [L,QSA]
+
+# Permitir acesso à API
+<FilesMatch "api\.php$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Habilitar CORS
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, DELETE, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+
+# Habilitar compressão GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
+</IfModule>
+
+# Cache do navegador
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# Proteção de diretório
+Options -Indexes
+
+# Configurações PHP
+<IfModule mod_php.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+# Tratamento de erros
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# Forçar UTF-8
+AddDefaultCharset UTF-8

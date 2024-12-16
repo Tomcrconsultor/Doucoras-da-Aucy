@@ -1,0 +1,39 @@
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de ambiente
+.env
+.env.local
+
+# Arquivos de dependências
+/node_modules
+/vendor
+
+# Arquivos de log
+*.log
+error_log
+php_errorlog
+
+# Arquivos de cache
+.cache
+.temp
+
+# Arquivos de configuração local
+config.local.php
+
+# Arquivos de upload
+/images/products/*
+!/images/products/.gitkeep
+
+# Arquivos de IDE/Editor
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.swp
+*~ 

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "combo-felicidade",
+    "name": "Combo Felicidade",
+    "category": "combos",
+    "description": "1 Vulcão duo + torta de frango",
+    "price": 199.00,
+    "serves": "10-12 pessoas",
+    "imageUrl": "/images/products/combo-felicidade.jpg"
+  },
+  {
+    "id": "combo-feliz-natal",
+    "name": "Combo Feliz Natal",
+    "category": "combos",
+    "description": "1 Merengue + torta de frango",
+    "price": 259.99,
+    "serves": "10-12 pessoas",
+    "imageUrl": "/images/products/combo-feliz-natal.jpg"
+  },
+  {
+    "id": "combo-prosperidade",
+    "name": "Combo Prosperidade",
+    "category": "combos",
+    "description": "1 bolo feliz natal 15cm + sobremesa de limão + quiche de frango",
+    "price": 349.99,
+    "serves": "10-12 pessoas",
+    "imageUrl": "/images/products/combo-prosperidade.jpg"
+  }
+] 
