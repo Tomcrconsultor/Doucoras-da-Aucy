@@ -1,4 +1,4 @@
-name: Deploy to Hostgator
+name: Deploy para Hostgator
 
 on:
   push:
@@ -7,24 +7,26 @@ on:
   workflow_dispatch:
 
 jobs:
-  web-deploy:
-    name: Deploy
+  deploy:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
     
     steps:
-    - name: Get latest code
-      uses: actions/checkout@v3
-    
-    - name: Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /public_html/
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          README.md
-          .github/** 
+      - name: 🚚 Obtendo código mais recente
+        uses: actions/checkout@v3
+        
+      - name: 📂 Sincronizando arquivos
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ftp.docurasdaucy.com.br
+          username: docurasdaucy@docurasdaucy.com.br
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ./
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            README.md
+            .github/**
+            teste_ftp.py
+            deploy.py
