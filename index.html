@@ -141,7 +141,7 @@
                         <img src="${combo.imageUrl}" alt="${combo.name}" class="product-image">
                         <h3>${combo.name}</h3>
                         <p>${combo.description}</p>
-                        <span class="price">R$ ${parseFloat(combo.price).toFixed(2).replace('.', ',')}</span>
+                        <span class="price">${formatPrice(combo.price)}</span>
                         <p class="serves">Serve ${combo.serves}</p>
                         <a href="https://wa.me/${WHATSAPP_NUMBER}?text=Olá! Gostaria de informações sobre o combo: ${encodeURIComponent(combo.name)}" class="cta-button" target="_blank">
                             Fazer Pedido
